@@ -1,0 +1,221 @@
+# SpecRadar — source term → canonical mapping.
+#
+# Sources are Brazilian (PT-BR), so the PT→canonical map is essential. Two maps:
+#
+#   attributes: free/source attribute label  → canonical attribute id
+#   values:     per-attribute, source value  → canonical value (from its value_set)
+#
+# Matching is case-insensitive and accent-insensitive (see normalization/categorical.py).
+
+version: 1
+
+# --- free attribute label → canonical attribute id --------------------------
+attributes:
+  "potencia": engine.power_cv
+  "potencia maxima": engine.power_cv
+  "cavalos": engine.power_cv
+  "cv": engine.power_cv
+  "torque": engine.torque_nm
+  "torque maximo": engine.torque_nm
+  "cilindrada": engine.displacement_l
+  "motor": engine.configuration
+  "motorizacao": engine.configuration
+  "combustivel": engine.fuel
+  "cambio": transmission
+  "transmissao": transmission
+  "marchas": transmission.gears
+  "quantidade de marchas": transmission.gears
+  "tracao": drivetrain
+  "tracao 4x4": drivetrain
+  "tracao integral": drivetrain
+  "modos de conducao": drive_modes
+  "drive modes": drive_modes
+  "modos de direcao": steering_modes
+  "modos de escapamento": exhaust_modes
+  "modos de amortecimento": damper_modes
+  "0 a 100": performance.0_100_kmh_s
+  "0-100": performance.0_100_kmh_s
+  "aceleracao": performance.0_100_kmh_s
+  "velocidade maxima": performance.top_speed_kmh
+  "consumo urbano": fuel.consumption_city_kml
+  "consumo cidade": fuel.consumption_city_kml
+  "consumo rodoviario": fuel.consumption_road_kml
+  "consumo estrada": fuel.consumption_road_kml
+  "emissao de co2": emissions.co2_gkm
+  "amortecedores": suspension.dampers
+  "suspensao dianteira": suspension.front
+  "suspensao traseira": suspension.rear
+  "freios dianteiros": brakes.front
+  "freios traseiros": brakes.rear
+  "pneus": wheels.tires
+  "pneu": wheels.tires
+  "aro": wheels.rim_diameter_in
+  "rodas": wheels.material
+  "comprimento": dimensions.length_mm
+  "entre-eixos": dimensions.wheelbase_mm
+  "entre eixos": dimensions.wheelbase_mm
+  "distancia entre-eixos": dimensions.wheelbase_mm
+  "altura livre do solo": dimensions.ground_clearance_mm
+  "vao livre do solo": dimensions.ground_clearance_mm
+  "peso": capacity.curb_weight_kg
+  "peso em ordem de marcha": capacity.curb_weight_kg
+  "carga util": capacity.payload_kg
+  "capacidade de carga": capacity.payload_kg
+  "capacidade de reboque": capacity.towing_kg
+  "reboque": capacity.towing_kg
+  "tanque": capacity.fuel_tank_l
+  "tanque de combustivel": capacity.fuel_tank_l
+  "carroceria": body.style
+  "cabine": body.style
+  "lugares": body.seats
+  "ocupantes": body.seats
+  "farois": headlights
+  "farol": headlights
+  "multimidia": infotainment.screen_in
+  "central multimidia": infotainment.screen_in
+  "tela": infotainment.screen_in
+  "painel digital": infotainment.cluster_in
+  "quadro de instrumentos": infotainment.cluster_in
+  "airbags": safety.airbags
+  "teto solar": features.sunroof
+  "bancos": features.seat_material
+  "revestimento": features.seat_material
+  "bloqueio de diferencial": offroad.diff_lock
+  "diferencial blocante": offroad.diff_lock
+  "garantia": warranty.years
+  "preco": price.brl
+  "preco sugerido": price.brl
+  "valor": price.brl
+
+# --- per-attribute value → canonical value ----------------------------------
+values:
+  drivetrain:
+    "4x4": "4WD"
+    "4 x 4": "4WD"
+    "tracao nas quatro rodas": "4WD"
+    "tracao 4x4": "4WD"
+    "4wd": "4WD"
+    "awd": "AWD"
+    "tracao integral": "AWD"
+    "integral": "AWD"
+    "dianteira": "FWD"
+    "tracao dianteira": "FWD"
+    "fwd": "FWD"
+    "traseira": "RWD"
+    "tracao traseira": "RWD"
+    "rwd": "RWD"
+
+  engine.fuel:
+    "flex": "Flex"
+    "gasolina": "Gasolina"
+    "etanol": "Etanol"
+    "alcool": "Etanol"
+    "diesel": "Diesel"
+    "diesel s10": "Diesel"
+    "hibrido": "Híbrido"
+    "eletrico": "Elétrico"
+
+  engine.aspiration:
+    "turbo": "Turbo"
+    "turbinado": "Turbo"
+    "biturbo": "Biturbo"
+    "bi-turbo": "Biturbo"
+    "twin-turbo": "Biturbo"
+    "aspirado": "Naturalmente aspirado"
+    "naturalmente aspirado": "Naturalmente aspirado"
+
+  headlights:
+    "matrix led": "Matrix LED"
+    "farois matrix": "Matrix LED"
+    "full led": "Full LED"
+    "led": "LED"
+    "halogeno": "Halógeno"
+    "xenon": "Xenon"
+
+  wheels.material:
+    "liga leve": "Liga leve"
+    "liga": "Liga leve"
+    "aco": "Aço"
+
+  brakes.front:
+    "disco ventilado": "Disco ventilado"
+    "discos ventilados": "Disco ventilado"
+    "disco": "Disco sólido"
+    "tambor": "Tambor"
+  brakes.rear:
+    "disco ventilado": "Disco ventilado"
+    "discos ventilados": "Disco ventilado"
+    "disco": "Disco sólido"
+    "tambor": "Tambor"
+
+  body.style:
+    "cabine dupla": "Cabine dupla"
+    "cd": "Cabine dupla"
+    "cabine simples": "Cabine simples"
+    "cs": "Cabine simples"
+    "chassi": "Chassi"
+    "suv": "SUV"
+    "sedan": "Sedã"
+    "hatch": "Hatch"
+
+  features.sunroof:
+    "teto solar eletrico": "Elétrico"
+    "teto solar panoramico": "Panorâmico"
+    "panoramico": "Panorâmico"
+    "nao possui": "Nenhum"
+    "nenhum": "Nenhum"
+
+  features.seat_material:
+    "couro": "Couro"
+    "couro parcial": "Couro parcial"
+    "parcial em couro": "Couro parcial"
+    "tecido": "Tecido"
+    "vinil": "Vinil"
+    "alcantara": "Alcantara"
+
+  offroad.diff_lock:
+    "bloqueio traseiro": "Traseiro"
+    "diferencial traseiro blocante": "Traseiro"
+    "bloqueio dianteiro": "Dianteiro"
+    "dianteiro e traseiro": "Dianteiro e traseiro"
+    "nenhum": "Nenhum"
+
+  # Drive/steering/exhaust/damper mode tokens (PT/EN) → canonical mode token.
+  drive_modes:
+    "normal": "Normal"
+    "esportivo": "Sport"
+    "sport": "Sport"
+    "conforto": "Comfort"
+    "comfort": "Comfort"
+    "eco": "Eco"
+    "escorregadio": "Slippery"
+    "slippery": "Slippery"
+    "lama": "Mud"
+    "mud": "Mud"
+    "areia": "Sand"
+    "sand": "Sand"
+    "rock crawl": "Rock Crawl"
+    "pedras": "Rock Crawl"
+    "baja": "Baja"
+    "reboque": "Tow"
+    "tow": "Tow"
+    "neve": "Snow"
+    "snow": "Snow"
+  steering_modes:
+    "normal": "Normal"
+    "esportivo": "Sport"
+    "sport": "Sport"
+    "conforto": "Comfort"
+    "comfort": "Comfort"
+  exhaust_modes:
+    "normal": "Normal"
+    "silencioso": "Quiet"
+    "quiet": "Quiet"
+    "esportivo": "Sport"
+    "sport": "Sport"
+    "baja": "Baja"
+  damper_modes:
+    "normal": "Normal"
+    "esportivo": "Sport"
+    "sport": "Sport"
+    "baja": "Baja"

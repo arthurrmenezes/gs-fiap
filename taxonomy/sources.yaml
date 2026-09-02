@@ -1,0 +1,64 @@
+# SpecRadar — source allowlist, ordered by AUTHORITY.
+#
+# tier 1 wins in coalesce. Resolution is restricted to this allowlist: a URL
+# whose domain is not listed here is never fetched. Respect robots.txt / ToS;
+# prefer official/structured data over aggressive scraping.
+#
+# kind ∈ {oem, price, efficiency, aggregator, editorial}
+# tier: 1 (highest authority) .. 4 (lowest)
+
+version: 1
+
+sources:
+  # --- tier 1: official OEM ---
+  - domain: ford.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: chevrolet.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: toyota.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: volkswagen.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: ram.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: nissan.com.br
+    authority_tier: 1
+    kind: oem
+  - domain: mitsubishimotors.com.br
+    authority_tier: 1
+    kind: oem
+
+  # --- tier 2: official references (price / efficiency) ---
+  - domain: veiculos.fipe.org.br
+    authority_tier: 2
+    kind: price
+  - domain: gov.br            # Inmetro / PBEV (consumo/eficiência)
+    authority_tier: 2
+    kind: efficiency
+
+  # --- tier 3: aggregators ---
+  - domain: icarros.com.br
+    authority_tier: 3
+    kind: aggregator
+  - domain: webmotors.com.br
+    authority_tier: 3
+    kind: aggregator
+  - domain: carrosnaweb.com.br
+    authority_tier: 3
+    kind: aggregator
+
+  # --- tier 4: editorial / reviews (lowest confidence) ---
+  - domain: quatrorodas.abril.com.br
+    authority_tier: 4
+    kind: editorial
+  - domain: autoesporte.globo.com
+    authority_tier: 4
+    kind: editorial
+  - domain: motor1.com
+    authority_tier: 4
+    kind: editorial

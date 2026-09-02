@@ -1,0 +1,333 @@
+# SpecRadar — canonical attribute dictionary (the crown jewel).
+#
+# This file is the SINGLE source of truth for the domain. Attribute keys are in
+# English; canonical CATEGORICAL/ENUM values may be PT-BR for analyst legibility.
+# NEVER hardcode an attribute in Python — load it from here via taxonomy/loader.py.
+#
+# data_type ∈ {SCALAR_UNIT, CATEGORICAL, COMPOSITE, DIMENSIONAL, ENUM_LIST, BOOLEAN, TEXT}
+#
+# Optional fields:
+#   canonical_unit  — for SCALAR_UNIT; the unit every value is converted to.
+#   value_set       — for CATEGORICAL/ENUM_LIST; allowed canonical values.
+#   parser          — for COMPOSITE/DIMENSIONAL; deterministic parser key.
+#   sanity          — {min,max} numeric bounds (canonical unit) for anomaly checks.
+#   tolerance       — max relative delta between sources before CONFLICT (default per type).
+
+version: 1
+
+attributes:
+  # ---------------------------------------------------------------- powertrain
+  - id: engine.configuration
+    name: "Configuração do motor"
+    group: powertrain
+    data_type: COMPOSITE
+    parser: engine            # cylinders / displacement_l / layout / aspiration
+
+  - id: engine.power_cv
+    name: "Potência"
+    group: powertrain
+    data_type: SCALAR_UNIT
+    canonical_unit: cv        # converter accepts hp, kW, PS → cv
+    sanity: { min: 40, max: 1500 }
+
+  - id: engine.torque_nm
+    name: "Torque"
+    group: powertrain
+    data_type: SCALAR_UNIT
+    canonical_unit: Nm        # converter accepts kgfm, lbft → Nm
+    sanity: { min: 60, max: 2000 }
+
+  - id: engine.displacement_l
+    name: "Cilindrada"
+    group: powertrain
+    data_type: SCALAR_UNIT
+    canonical_unit: L         # converter accepts cc/cm3 → L
+    sanity: { min: 0.6, max: 8.5 }
+
+  - id: engine.fuel
+    name: "Combustível"
+    group: powertrain
+    data_type: CATEGORICAL
+    value_set: ["Gasolina", "Etanol", "Flex", "Diesel", "Híbrido", "Elétrico"]
+
+  - id: engine.aspiration
+    name: "Aspiração"
+    group: powertrain
+    data_type: CATEGORICAL
+    value_set: ["Naturalmente aspirado", "Turbo", "Biturbo", "Supercharged"]
+
+  - id: transmission
+    name: "Transmissão"
+    group: powertrain
+    data_type: COMPOSITE
+    parser: transmission      # type / gears / paddle_shifters
+
+  - id: transmission.gears
+    name: "Número de marchas"
+    group: powertrain
+    data_type: SCALAR_UNIT
+    canonical_unit: gears
+    sanity: { min: 1, max: 12 }
+
+  - id: drivetrain
+    name: "Tração"
+    group: powertrain
+    data_type: CATEGORICAL
+    value_set: ["FWD", "RWD", "4WD", "AWD"]
+
+  - id: drive_modes
+    name: "Modos de condução"
+    group: dynamics
+    data_type: ENUM_LIST
+    value_set:
+      [Normal, Sport, Comfort, Eco, Slippery, Mud, Sand, "Rock Crawl", Baja, Tow, Snow]
+
+  - id: steering_modes
+    name: "Modos de direção"
+    group: dynamics
+    data_type: ENUM_LIST
+    value_set: [Normal, Sport, Comfort]
+
+  - id: exhaust_modes
+    name: "Modos de escapamento"
+    group: dynamics
+    data_type: ENUM_LIST
+    value_set: [Normal, Quiet, Sport, Baja]
+
+  - id: damper_modes
+    name: "Modos de amortecimento"
+    group: dynamics
+    data_type: ENUM_LIST
+    value_set: [Normal, Sport, Baja]
+
+  # ---------------------------------------------------------------- performance
+  - id: performance.0_100_kmh_s
+    name: "Aceleração 0–100 km/h"
+    group: performance
+    data_type: SCALAR_UNIT
+    canonical_unit: s
+    sanity: { min: 1.5, max: 30 }
+
+  - id: performance.top_speed_kmh
+    name: "Velocidade máxima"
+    group: performance
+    data_type: SCALAR_UNIT
+    canonical_unit: "km/h"
+    sanity: { min: 80, max: 400 }
+
+  - id: fuel.consumption_city_kml
+    name: "Consumo urbano"
+    group: efficiency
+    data_type: SCALAR_UNIT
+    canonical_unit: "km/L"    # converter accepts L/100km, mpg → km/L
+    sanity: { min: 1, max: 40 }
+
+  - id: fuel.consumption_road_kml
+    name: "Consumo rodoviário"
+    group: efficiency
+    data_type: SCALAR_UNIT
+    canonical_unit: "km/L"
+    sanity: { min: 1, max: 40 }
+
+  - id: emissions.co2_gkm
+    name: "Emissão de CO2"
+    group: efficiency
+    data_type: SCALAR_UNIT
+    canonical_unit: "g/km"
+    sanity: { min: 0, max: 600 }
+
+  # ---------------------------------------------------------------- chassis
+  - id: suspension.dampers
+    name: "Amortecedores"
+    group: chassis
+    data_type: TEXT
+
+  - id: suspension.front
+    name: "Suspensão dianteira"
+    group: chassis
+    data_type: TEXT
+
+  - id: suspension.rear
+    name: "Suspensão traseira"
+    group: chassis
+    data_type: TEXT
+
+  - id: brakes.front
+    name: "Freios dianteiros"
+    group: chassis
+    data_type: CATEGORICAL
+    value_set: ["Disco ventilado", "Disco sólido", "Tambor"]
+
+  - id: brakes.rear
+    name: "Freios traseiros"
+    group: chassis
+    data_type: CATEGORICAL
+    value_set: ["Disco ventilado", "Disco sólido", "Tambor"]
+
+  # ---------------------------------------------------------------- wheels
+  - id: wheels.tires
+    name: "Pneus"
+    group: wheels
+    data_type: DIMENSIONAL
+    parser: tire              # width / aspect_ratio / rim_diameter_in
+    sanity: { min: 13, max: 24 }   # bounds checked against rim diameter (in)
+
+  - id: wheels.rim_diameter_in
+    name: "Aro"
+    group: wheels
+    data_type: SCALAR_UNIT
+    canonical_unit: in
+    sanity: { min: 13, max: 24 }
+
+  - id: wheels.material
+    name: "Material das rodas"
+    group: wheels
+    data_type: CATEGORICAL
+    value_set: ["Liga leve", "Aço"]
+
+  # ---------------------------------------------------------------- dimensions
+  - id: dimensions.length_mm
+    name: "Comprimento"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: mm
+    sanity: { min: 2500, max: 7000 }
+
+  - id: dimensions.wheelbase_mm
+    name: "Entre-eixos"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: mm
+    sanity: { min: 1800, max: 4500 }
+
+  - id: dimensions.ground_clearance_mm
+    name: "Altura livre do solo"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: mm
+    sanity: { min: 90, max: 400 }
+
+  - id: capacity.curb_weight_kg
+    name: "Peso em ordem de marcha"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: kg
+    sanity: { min: 700, max: 4000 }
+
+  - id: capacity.payload_kg
+    name: "Carga útil"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: kg
+    sanity: { min: 200, max: 2500 }
+
+  - id: capacity.towing_kg
+    name: "Capacidade de reboque"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: kg
+    sanity: { min: 500, max: 5000 }
+
+  - id: capacity.fuel_tank_l
+    name: "Tanque de combustível"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: L
+    sanity: { min: 25, max: 150 }
+
+  - id: body.style
+    name: "Carroceria"
+    group: dimensions
+    data_type: CATEGORICAL
+    value_set: ["Cabine dupla", "Cabine simples", "Chassi", "SUV", "Sedã", "Hatch"]
+
+  - id: body.seats
+    name: "Lugares"
+    group: dimensions
+    data_type: SCALAR_UNIT
+    canonical_unit: seats
+    sanity: { min: 2, max: 9 }
+
+  # ---------------------------------------------------------------- lighting / tech
+  - id: headlights
+    name: "Faróis"
+    group: lighting
+    data_type: CATEGORICAL
+    value_set: ["Halógeno", "LED", "Full LED", "Matrix LED", "Xenon"]
+
+  - id: infotainment.screen_in
+    name: "Tela multimídia"
+    group: technology
+    data_type: SCALAR_UNIT
+    canonical_unit: in
+    sanity: { min: 4, max: 18 }
+
+  - id: infotainment.cluster_in
+    name: "Painel de instrumentos digital"
+    group: technology
+    data_type: SCALAR_UNIT
+    canonical_unit: in
+    sanity: { min: 0, max: 18 }
+
+  - id: safety.airbags
+    name: "Airbags"
+    group: safety
+    data_type: SCALAR_UNIT
+    canonical_unit: airbags
+    sanity: { min: 0, max: 12 }
+
+  - id: features.adas
+    name: "ADAS"
+    group: safety
+    data_type: ENUM_LIST
+    value_set:
+      [
+        "Piloto automático adaptativo",
+        "Frenagem automática de emergência",
+        "Alerta de permanência em faixa",
+        "Assistência de permanência em faixa",
+        "Monitoramento de ponto cego",
+        "Reconhecimento de placas",
+        "Alerta de colisão frontal",
+        "Controle de descida",
+      ]
+
+  # ---------------------------------------------------------------- comfort / 4x4
+  - id: features.sunroof
+    name: "Teto solar"
+    group: comfort
+    data_type: CATEGORICAL
+    value_set: ["Nenhum", "Elétrico", "Panorâmico"]
+
+  - id: features.seat_material
+    name: "Revestimento dos bancos"
+    group: comfort
+    data_type: CATEGORICAL
+    value_set: ["Tecido", "Couro", "Couro parcial", "Vinil", "Alcantara"]
+
+  - id: offroad.diff_lock
+    name: "Bloqueio de diferencial"
+    group: offroad
+    data_type: CATEGORICAL
+    value_set: ["Nenhum", "Traseiro", "Dianteiro", "Dianteiro e traseiro"]
+
+  - id: offroad.terrain_management
+    name: "Gerenciamento de terreno"
+    group: offroad
+    data_type: BOOLEAN
+
+  # ---------------------------------------------------------------- commercial
+  - id: warranty.years
+    name: "Garantia"
+    group: commercial
+    data_type: SCALAR_UNIT
+    canonical_unit: years
+    sanity: { min: 1, max: 10 }
+
+  - id: price.brl
+    name: "Preço"
+    group: commercial
+    data_type: SCALAR_UNIT
+    canonical_unit: BRL
+    # A mid-size pickup outside this band is almost certainly an extraction error.
+    sanity: { min: 150000, max: 600000 }

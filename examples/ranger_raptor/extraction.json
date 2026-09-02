@@ -1,0 +1,47 @@
+{
+  "_comment": "Offline fixture: canned LLM tool outputs per document, in order. Evidence snippets are literal substrings of the matching document so the real verifier runs. One value (icarros torque) is a deliberate hallucination to prove the verifier discards it.",
+  "documents": [
+    {
+      "url": "https://www.ford.com.br/picapes/ranger-raptor/",
+      "domain": "ford.com.br",
+      "source_tier": 1,
+      "text_file": "ford_oficial.txt",
+      "values": [
+        {"attribute_id": "engine.configuration", "value_raw": "V6 3.0 L biturbo", "evidence_snippet": "Motor: V6 3.0 L biturbo a gasolina.", "confidence": 0.97, "found": true},
+        {"attribute_id": "engine.power_cv", "value_raw": "397 cv", "evidence_snippet": "Potência: 397 cv a 5.650 rpm.", "confidence": 0.98, "found": true},
+        {"attribute_id": "engine.torque_nm", "value_raw": "583 Nm", "evidence_snippet": "Torque: 583 Nm a 3.500 rpm.", "confidence": 0.98, "found": true},
+        {"attribute_id": "transmission", "value_raw": "automática de 10 marchas com paddle shifters", "evidence_snippet": "Transmissão: automática de 10 marchas com paddle shifters.", "confidence": 0.96, "found": true},
+        {"attribute_id": "transmission.gears", "value_raw": "10 marchas", "evidence_snippet": "automática de 10 marchas com paddle shifters", "confidence": 0.95, "found": true},
+        {"attribute_id": "drivetrain", "value_raw": "4WD", "evidence_snippet": "Tração: 4WD com bloqueio de diferencial dianteiro e traseiro.", "confidence": 0.97, "found": true},
+        {"attribute_id": "suspension.dampers", "value_raw": "FOX Racing Live Valve 2.5\"", "evidence_snippet": "Suspensão: amortecedores FOX Racing Live Valve 2.5\".", "confidence": 0.93, "found": true},
+        {"attribute_id": "performance.0_100_kmh_s", "value_raw": "5.8 s", "evidence_snippet": "aceleração de 0 a 100 km/h em 5.8 s.", "confidence": 0.9, "found": true},
+        {"attribute_id": "drive_modes", "value_raw": "Normal, Sport, Slippery, Mud, Sand, Rock Crawl, Baja", "evidence_snippet": "Modos de condução: Normal, Sport, Slippery, Mud, Sand, Rock Crawl, Baja.", "confidence": 0.95, "found": true},
+        {"attribute_id": "steering_modes", "value_raw": "Normal, Sport, Comfort", "evidence_snippet": "Modos de direção: Normal, Sport, Comfort.", "confidence": 0.95, "found": true},
+        {"attribute_id": "exhaust_modes", "value_raw": "Normal, Quiet, Sport, Baja", "evidence_snippet": "Modos de escapamento: Normal, Quiet, Sport, Baja.", "confidence": 0.95, "found": true},
+        {"attribute_id": "damper_modes", "value_raw": "Normal, Sport, Baja", "evidence_snippet": "Modos de amortecimento: Normal, Sport, Baja.", "confidence": 0.95, "found": true},
+        {"attribute_id": "headlights", "value_raw": "Matrix LED", "evidence_snippet": "Faróis: Matrix LED com farol alto automático.", "confidence": 0.96, "found": true},
+        {"attribute_id": "wheels.tires", "value_raw": "285/70 R17", "evidence_snippet": "Pneus: 285/70 R17 all-terrain, montados em rodas de aro 17\".", "confidence": 0.95, "found": true},
+        {"attribute_id": "wheels.rim_diameter_in", "value_raw": "17\"", "evidence_snippet": "montados em rodas de aro 17\".", "confidence": 0.9, "found": true},
+        {"attribute_id": "body.style", "value_raw": "cabine dupla", "evidence_snippet": "Carroceria: cabine dupla, 5 lugares.", "confidence": 0.94, "found": true},
+        {"attribute_id": "body.seats", "value_raw": "5 lugares", "evidence_snippet": "Carroceria: cabine dupla, 5 lugares.", "confidence": 0.94, "found": true},
+        {"attribute_id": "warranty.years", "value_raw": "3 anos", "evidence_snippet": "Garantia: 3 anos sem limite de quilometragem.", "confidence": 0.92, "found": true},
+        {"attribute_id": "emissions.co2_gkm", "value_raw": null, "evidence_snippet": null, "confidence": 0.0, "found": false}
+      ]
+    },
+    {
+      "url": "https://www.icarros.com.br/ford/ranger-raptor",
+      "domain": "icarros.com.br",
+      "source_tier": 3,
+      "text_file": "icarros.txt",
+      "values": [
+        {"attribute_id": "engine.power_cv", "value_raw": "397 cv", "evidence_snippet": "motor V6 biturbo de 397 cv,", "confidence": 0.85, "found": true},
+        {"attribute_id": "drivetrain", "value_raw": "4x4", "evidence_snippet": "tração 4x4", "confidence": 0.8, "found": true},
+        {"attribute_id": "price.brl", "value_raw": "R$ 499", "evidence_snippet": "Preço sugerido: R$ 499.", "confidence": 0.7, "found": true},
+        {"attribute_id": "wheels.tires", "value_raw": "285/70 R17", "evidence_snippet": "pneus 285/70 R17", "confidence": 0.82, "found": true},
+        {"attribute_id": "headlights", "value_raw": "Matrix LED", "evidence_snippet": "faróis Matrix LED.", "confidence": 0.82, "found": true},
+        {"attribute_id": "infotainment.screen_in", "value_raw": "12\"", "evidence_snippet": "tela de 12\".", "confidence": 0.8, "found": true},
+        {"attribute_id": "engine.torque_nm", "value_raw": "600 Nm", "evidence_snippet": "Torque combinado de 600 Nm em todas as versões", "confidence": 0.6, "found": true}
+      ]
+    }
+  ]
+}
