@@ -1,5 +1,12 @@
 # SpecRadar — Inteligência Competitiva Automotiva (Mobile)
 
+## Equipe
+
+| Nome | RM |
+|---|---|
+| Arthur Menezes | 562950 |
+| Caio Rasuck | 93645 |
+
 > Desafio **FIAP × Ford** · Disciplina **Mobile Development and IoT**
 > App Android (APK) + backend em Python.
 
@@ -22,7 +29,6 @@ A solução foi validada com a **Ford Ranger Raptor**, conforme pedido no desafi
 - [Validação — Ford Ranger Raptor](#validação--ford-ranger-raptor)
 - [Estrutura de pastas](#estrutura-de-pastas)
 - [Tecnologias](#tecnologias)
-- [Equipe](#equipe)
 
 ---
 
@@ -168,11 +174,12 @@ gradlew assembleRelease
 
 ### Instalar
 
-O APK da versão 1.0.0 já gerado fica em `release/SpecRadar-v1.0.0.apk` (também publicado
-na página de *Releases* do repositório). Ele foi testado no emulador Android (Pixel 9 Pro)
-e roda em celulares ARM 64-bit, que são praticamente todos os aparelhos atuais.
+**[⬇️ Baixar SpecRadar-v1.0.0.apk](https://github.com/arthurrmenezes/gs-fiap/releases/download/v1.0.0/SpecRadar-v1.0.0.apk)**
+(página da versão: [Releases → v1.0.0](https://github.com/arthurrmenezes/gs-fiap/releases/tag/v1.0.0)).
+Ele foi testado no emulador Android (Pixel 9 Pro) e roda em celulares ARM 64-bit, que são
+praticamente todos os aparelhos atuais.
 
-- **Emulador:** arraste o `.apk` para a janela do emulador (ou `adb install app-release.apk`).
+- **Emulador:** arraste o `.apk` para a janela do emulador (ou `adb install SpecRadar-v1.0.0.apk`).
 - **Celular:** envie o `.apk` para o aparelho, abra e permita “instalar apps de fontes
   desconhecidas”.
 
@@ -237,10 +244,3 @@ AsyncStorage · Ionicons · EAS Build.
 
 **Backend:** Python · FastAPI · Pydantic · PyYAML · pytest · (opcional) Claude API para
 extração e Google Custom Search para achar as fontes.
-
-## Equipe
-
-| Nome | RM |
-|---|---|
-| Arthur Menezes | 562950 |
-| Caio Rasuck | 93645 |
