@@ -1,10 +1,3 @@
-"""Stage [3] orchestration: call the LLM with a forced schema, then verify.
-
-The LLM client is an injectable Protocol so the pipeline, the golden test, and
-unit tests can swap a real Anthropic client for an offline/fixture one without
-touching pipeline logic.
-"""
-
 from __future__ import annotations
 
 from typing import Any, Protocol
@@ -25,8 +18,6 @@ log = get_logger("extractor")
 
 
 class LLMClient(Protocol):
-    """Minimal contract: run a tool-forced extraction, return the `values` array."""
-
     def extract(
         self,
         *,
@@ -49,11 +40,6 @@ def extract_attributes(
     attributes: list[AttributeDef],
     document: Document,
 ) -> list[ExtractedValue]:
-    """Extract + verify the requested attributes from one document.
-
-    Every returned value has had its evidence verified against the document.
-    Hallucinated values are already downgraded to not-found.
-    """
     if not attributes:
         return []
 
@@ -81,8 +67,6 @@ def extract_attributes(
 
 
 class Extractor:
-    """Convenience wrapper binding an LLM client for repeated extraction calls."""
-
     def __init__(self, client: LLMClient) -> None:
         self._client = client
 
@@ -91,12 +75,9 @@ class Extractor:
 
 
 class AnthropicLLMClient:
-    """Real LLM client using Anthropic tool-use to force the JSON Schema."""
-
     def __init__(self, api_key: str, model: str) -> None:
         if not api_key:
             raise ExtractionError("ANTHROPIC_API_KEY is required for the live LLM client")
-        # Imported lazily so unit/golden tests never need the SDK installed.
         import anthropic
 
         self._client = anthropic.Anthropic(api_key=api_key)
@@ -110,8 +91,6 @@ class AnthropicLLMClient:
         tool: dict[str, Any],
         tool_name: str,
     ) -> list[dict[str, Any]]:
-        # The SDK types tools/tool_choice with strict TypedDicts; our schema is
-        # built dynamically from the taxonomy, so we pass plain dicts here.
         response: Any = self._client.messages.create(  # type: ignore[call-overload]
             model=self._model,
             max_tokens=4096,

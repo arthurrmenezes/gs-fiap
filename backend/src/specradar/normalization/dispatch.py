@@ -1,9 +1,3 @@
-"""Dispatch an extracted value to the right deterministic normalizer by data type.
-
-This is the bridge from stage [3] (extraction) to stage [4] (normalization). It
-is pure: (ExtractedValue, AttributeDef, Document) → NormalizedValue.
-"""
-
 from __future__ import annotations
 
 from typing import Any
@@ -39,10 +33,6 @@ def normalize_value(
     doc: Document,
     taxonomy: Taxonomy,
 ) -> NormalizedValue | None:
-    """Normalize one verified extracted value. Returns None if not normalizable.
-
-    The caller (pipeline) only passes evidence-verified, found values here.
-    """
     raw = extracted.value_raw
     if raw is None:
         return None

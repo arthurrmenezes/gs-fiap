@@ -1,5 +1,3 @@
-// Tipos compartilhados. Espelham o contrato da API (backend/src/specradar/api/schemas.py).
-
 export type SpecStatus = 'OK' | 'CONFLICT' | 'ANOMALY' | 'NA' | 'LOW_CONFIDENCE';
 
 export type SpecValue = string | number | boolean | string[] | Record<string, unknown> | null;
@@ -21,7 +19,6 @@ export interface SpecField {
   alternatives: SpecValue[];
 }
 
-// "live" = busca real com IA · "demo" = servidor sem chaves · "offline" = dados embarcados no app
 export type SheetMode = 'live' | 'demo' | 'offline';
 
 export interface SpecSheet {
@@ -50,7 +47,6 @@ export interface HistoryEntry {
   createdAt: string;
   request: SpecRequest;
   sheet: SpecSheet;
-  // Aviso mostrado na ficha (ex.: servidor fora do ar, usamos os dados offline).
   notice?: string;
 }
 

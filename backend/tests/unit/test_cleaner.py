@@ -1,5 +1,3 @@
-"""HTML → clean text. Preserves spec wording, drops script/style noise."""
-
 from __future__ import annotations
 
 from specradar.sources.cleaner import clean_html, clean_text
@@ -24,7 +22,6 @@ def test_clean_html_strips_tags_and_noise() -> None:
 def test_block_tags_prevent_value_merge() -> None:
     html = "<li>397 cv</li><li>583 Nm</li>"
     text = clean_html(html)
-    # Values must not run together across list items.
     assert "397 cv583 Nm" not in text
     assert "397 cv" in text and "583 Nm" in text
 

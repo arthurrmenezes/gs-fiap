@@ -1,5 +1,3 @@
-"""API contract: SpecRequest / SpecSheetResponse (Pydantic v2)."""
-
 from __future__ import annotations
 
 from datetime import datetime
@@ -11,14 +9,11 @@ from specradar.models import ReconciledSpec, SpecStatus, VehicleKey
 
 
 class SpecRequest(BaseModel):
-    """Input: make + model + version + a free list of attributes."""
-
     make: str = Field(min_length=1, examples=["Ford"])
     model: str = Field(min_length=1, examples=["Ranger Raptor"])
     version: str = Field(min_length=1, examples=["Raptor 3.0 V6"])
     year: int | None = Field(default=None, ge=1990, le=2100, examples=[2026])
     market: str = Field(default="BR")
-    # Free-text attribute labels; resolved to the taxonomy. Empty → full sheet.
     attributes: list[str] = Field(default_factory=list)
 
     def to_vehicle_key(self) -> VehicleKey:
@@ -32,13 +27,11 @@ class SpecRequest(BaseModel):
 
 
 class SpecField(BaseModel):
-    """One row of the standardized sheet, with full provenance."""
-
     attribute_id: str
     name: str
     group: str
     data_type: str
-    value: Any = None  # normalized, comparable value (or null for NA)
+    value: Any = None
     value_raw: str | None = None
     unit: str | None = None
     status: SpecStatus
@@ -47,13 +40,10 @@ class SpecField(BaseModel):
     source_tier: int | None = None
     evidence_snippet: str | None = None
     note: str | None = None
-    # CONFLICT preserves both candidates.
     alternatives: list[Any] = Field(default_factory=list)
 
 
 class SpecSheetResponse(BaseModel):
-    """Output: the standardized, always-same-format spec sheet."""
-
     make: str
     model: str
     version: str
@@ -61,9 +51,7 @@ class SpecSheetResponse(BaseModel):
     market: str
     generated_at: datetime
     source_count: int
-    # "demo" = bundled offline data; "live" = real search + LLM extraction.
     mode: str = "demo"
-    # Labels the user typed that could not be mapped to the taxonomy.
     unknown_attributes: list[str] = Field(default_factory=list)
     fields: list[SpecField]
 
@@ -73,7 +61,6 @@ class SpecSheetResponse(BaseModel):
 
 
 def spec_to_field(spec: ReconciledSpec, name: str, group: str, data_type: str) -> SpecField:
-    """Project a ReconciledSpec + taxonomy metadata into an API SpecField."""
     return SpecField(
         attribute_id=spec.attribute_id,
         name=name,

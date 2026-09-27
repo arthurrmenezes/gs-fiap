@@ -1,5 +1,3 @@
-// Tela "Ajustes": escolher entre dados offline e o servidor (backend FastAPI),
-// testar a conexão e ver informações sobre o app.
 import Constants from 'expo-constants';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';

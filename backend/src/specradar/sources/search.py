@@ -1,9 +1,3 @@
-"""Search client for source discovery (Google Custom Search / SerpAPI).
-
-Implements the resolver's SearchClient protocol. Kept import-light: httpx is only
-imported when a live search actually runs.
-"""
-
 from __future__ import annotations
 
 from specradar.config import Settings
@@ -14,8 +8,6 @@ log = get_logger("search")
 
 
 class GoogleCSEClient:
-    """Google Custom Search JSON API client."""
-
     _ENDPOINT = "https://www.googleapis.com/customsearch/v1"
 
     def __init__(self, api_key: str, engine_id: str) -> None:
@@ -26,7 +18,6 @@ class GoogleCSEClient:
         import httpx
 
         urls: list[str] = []
-        # CSE returns max 10 per page; page through up to `num` results.
         for start in range(1, min(num, 30) + 1, 10):
             params: dict[str, str | int] = {
                 "key": self._api_key,

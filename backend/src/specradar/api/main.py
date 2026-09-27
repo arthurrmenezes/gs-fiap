@@ -1,5 +1,3 @@
-"""FastAPI application factory."""
-
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
@@ -20,7 +18,6 @@ log = get_logger("app")
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     configure_logging(settings.log_level)
-    # Fail fast if the taxonomy is broken — it is the source of truth.
     tax = get_taxonomy()
     log.info("startup", env=settings.env, attributes=len(tax.all_attributes()))
     yield
@@ -33,7 +30,6 @@ def create_app() -> FastAPI:
         summary="Backend do app mobile SpecRadar — fichas técnicas padronizadas.",
         lifespan=lifespan,
     )
-    # The mobile app calls the API directly; CORS only matters for Expo Web.
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

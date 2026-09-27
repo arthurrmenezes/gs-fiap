@@ -1,5 +1,3 @@
-"""API contract test — offline path (no keys → bundled Raptor fixture)."""
-
 from __future__ import annotations
 
 import pytest
@@ -40,7 +38,6 @@ def test_spec_sheet_offline_fixture(client: TestClient) -> None:
 
 
 def test_spec_sheet_unknown_vehicle_returns_same_format_all_na(client: TestClient) -> None:
-    """A vehicle with no data still gets the full sheet, every field explicit NA."""
     raptor = client.post(
         "/api/spec", json={"make": "Ford", "model": "Ranger Raptor", "version": "Raptor"}
     ).json()

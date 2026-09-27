@@ -1,9 +1,7 @@
-// Comunicação com o backend (FastAPI). Se o servidor não responder, o app
-// usa os dados offline e avisa o usuário — assim nenhum fluxo termina em erro.
 import type { AppSettings, SpecRequest, SpecSheet } from '../types';
 import { buildOfflineSheet } from './offline';
 
-const REQUEST_TIMEOUT_MS = 60_000; // a busca ao vivo com IA pode demorar
+const REQUEST_TIMEOUT_MS = 60_000;
 const PING_TIMEOUT_MS = 5_000;
 
 function cleanUrl(url: string): string {
@@ -54,7 +52,6 @@ export async function fetchSpecSheet(
   }
 }
 
-// Usado na tela de Ajustes para testar a URL do servidor.
 export async function pingApi(apiUrl: string): Promise<boolean> {
   try {
     const response = await fetchWithTimeout(`${cleanUrl(apiUrl)}/api/health`, {}, PING_TIMEOUT_MS);

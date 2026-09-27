@@ -1,11 +1,9 @@
-// Identidade visual do SpecRadar: todas as cores, espaçamentos e tamanhos de
-// fonte do app vêm daqui. Nenhuma tela deve usar cor "solta".
 import type { SpecStatus } from './types';
 
 export const colors = {
-  primary: '#0B2545', // azul-marinho (marca)
+  primary: '#0B2545',
   primaryLight: '#13315C',
-  accent: '#1F7AE0', // azul de ação (botões, links)
+  accent: '#1F7AE0',
   accentSoft: '#E8F1FC',
   accentBorder: '#B9D5F7',
   background: '#F3F5F9',
@@ -40,7 +38,6 @@ export const typography = {
   },
 };
 
-// Cor, rótulo e explicação de cada status da ficha.
 export const statusMeta: Record<
   SpecStatus,
   { label: string; color: string; background: string; icon: string; description: string }

@@ -1,11 +1,3 @@
-"""Golden acceptance test — Ford Ranger Raptor. Merge gate (CLAUDE.md §8, §12).
-
-Runs the pipeline (stages [3]–[5]) fully offline against the bundled fixture and
-compares the result, field by field, to `ranger_raptor_truth.yaml`. Validates:
-the 5 hard data types, identical output format, price flagged ANOMALY, absent
-field as explicit NA, and the hallucinated torque discarded by the verifier.
-"""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -58,7 +50,6 @@ def _assert_value_equals(expected: Any, actual: Any) -> None:
 def test_output_format_is_complete_and_stable(
     taxonomy: Taxonomy, specs_by_id: dict[str, ReconciledSpec]
 ) -> None:
-    """The sheet covers EVERY taxonomy attribute — same format for any vehicle."""
     assert set(specs_by_id) == {a.id for a in taxonomy.all_attributes()}
 
 
@@ -80,7 +71,6 @@ def test_attribute_matches_truth(
 
 
 def test_price_anomaly_is_flagged(specs_by_id: dict[str, ReconciledSpec]) -> None:
-    """The planted R$ 499 must be auto-flagged, never silently accepted."""
     assert specs_by_id["price.brl"].status is SpecStatus.ANOMALY
 
 
@@ -91,5 +81,4 @@ def test_absent_attribute_is_explicit_na(specs_by_id: dict[str, ReconciledSpec])
 
 
 def test_hallucinated_torque_discarded(specs_by_id: dict[str, ReconciledSpec]) -> None:
-    """iCarros' 600 Nm (no real evidence) is dropped; Ford's verified 583 wins."""
     assert specs_by_id["engine.torque_nm"].value_norm == pytest.approx(583.0)

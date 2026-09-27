@@ -1,11 +1,3 @@
-"""Export the taxonomy + the Ranger Raptor demo sheet as JSON for the mobile app.
-
-The app ships these files so it works fully offline (demo mode) when the API
-is not reachable. Re-run after changing the taxonomy or the Raptor fixture:
-
-    python scripts/export_mobile_data.py
-"""
-
 from __future__ import annotations
 
 import json
@@ -26,7 +18,6 @@ OUT_DIR = REPO_ROOT.parent / "mobile" / "src" / "data"
 def main() -> None:
     tax = load_taxonomy(REPO_ROOT / "taxonomy")
 
-    # Attribute labels (synonyms) per attribute, so the app can resolve free text.
     synonyms_path = REPO_ROOT / "taxonomy" / "synonyms.yaml"
     raw_synonyms = yaml.safe_load(synonyms_path.read_text(encoding="utf-8"))["attributes"]
     labels: dict[str, list[str]] = {}
@@ -48,7 +39,6 @@ def main() -> None:
     vehicle = VehicleKey(
         make="Ford", model="Ranger Raptor", version="Raptor 3.0 V6", model_year=2026
     )
-    # Force demo mode (no keys) so the export never depends on the local .env.
     run = run_for_request(vehicle, None, Settings(ANTHROPIC_API_KEY="", SEARCH_API_KEY=""), tax)
     sheet = build_spec_sheet(
         vehicle,

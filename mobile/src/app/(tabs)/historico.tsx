@@ -1,4 +1,3 @@
-// Tela "Histórico": fichas geradas anteriormente, salvas no aparelho.
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -13,7 +12,6 @@ import { countByStatus, formatDate, vehicleSubtitle, vehicleTitle } from '../../
 export default function HistoryScreen() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
 
-  // Recarrega sempre que a aba ganha foco (ex.: depois de gerar uma ficha).
   useFocusEffect(
     useCallback(() => {
       getHistory().then(setHistory);

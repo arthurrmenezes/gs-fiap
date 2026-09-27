@@ -1,5 +1,3 @@
-// Tela "Ficha técnica": mostra o resultado padronizado, agrupado por seção.
-// Campos sem informação aparecem como "Não disponível" (nunca somem da lista).
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';

@@ -1,10 +1,3 @@
-"""Resolve a vehicle query to candidate source URLs, restricted to the allowlist.
-
-Discovery uses a search client (SerpAPI / Google CSE) when configured; results
-are filtered to allowlisted domains and ordered by authority tier. A URL whose
-domain is not allowlisted is never returned.
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -27,13 +20,10 @@ class SourceCandidate:
 
 
 class SearchClient(Protocol):
-    """Returns candidate URLs for a query string (most relevant first)."""
-
     def search(self, query: str, *, num: int = 10) -> list[str]: ...
 
 
 def build_query(vehicle: VehicleKey) -> str:
-    """Build the discovery query for a vehicle version."""
     parts = [vehicle.make, vehicle.model, vehicle.version, "ficha técnica especificações"]
     if vehicle.model_year is not None:
         parts.insert(3, str(vehicle.model_year))
@@ -51,11 +41,6 @@ def resolve_sources(
     *,
     max_candidates: int = 8,
 ) -> list[SourceCandidate]:
-    """Discover candidate URLs and filter/rank them by allowlist authority.
-
-    Deduplicates by domain (one best URL per domain), keeps only allowlisted
-    domains, and sorts by authority tier (tier 1 first).
-    """
     query = build_query(vehicle)
     urls = search_client.search(query, num=max_candidates * 3)
 
@@ -67,7 +52,7 @@ def resolve_sources(
             log.info("rejected_offlist", url=url, domain=domain)
             continue
         if source.domain in best_per_domain:
-            continue  # keep the first (most relevant) URL for that domain
+            continue
         best_per_domain[source.domain] = SourceCandidate(
             url=url,
             domain=source.domain,

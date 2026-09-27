@@ -1,5 +1,3 @@
-"""Synonym mapping for CATEGORICAL and ENUM_LIST."""
-
 from __future__ import annotations
 
 from specradar.normalization.categorical import normalize_categorical, normalize_enum_list

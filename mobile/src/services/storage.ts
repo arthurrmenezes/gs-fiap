@@ -1,4 +1,3 @@
-// Persistência local com AsyncStorage: histórico de fichas e configurações.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import type { AppSettings, HistoryEntry } from '../types';
@@ -7,7 +6,6 @@ const HISTORY_KEY = '@specradar/history';
 const SETTINGS_KEY = '@specradar/settings';
 const MAX_HISTORY = 30;
 
-// 10.0.2.2 é o "localhost" do computador visto de dentro do emulador Android.
 export const DEFAULT_SETTINGS: AppSettings = {
   useApi: false,
   apiUrl: 'http://10.0.2.2:8000',

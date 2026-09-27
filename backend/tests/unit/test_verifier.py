@@ -1,5 +1,3 @@
-"""Evidence verifier — the anti-hallucination core (CLAUDE.md §8)."""
-
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -53,7 +51,6 @@ def test_verified_value_kept() -> None:
 
 
 def test_hallucinated_value_discarded() -> None:
-    # Evidence claims a value not present in the document → discard + mark NA.
     value = ExtractedValue(
         attribute_id="engine.torque_nm",
         value_raw="600 Nm",

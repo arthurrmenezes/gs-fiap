@@ -1,5 +1,3 @@
-// Navegação raiz: as abas (Pesquisar / Histórico / Ajustes) + telas empilhadas
-// da ficha técnica e do detalhe de cada atributo.
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 

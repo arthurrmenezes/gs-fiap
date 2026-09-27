@@ -1,5 +1,3 @@
-"""Structured logging setup. Every stage logs vehicle_key / attribute_id / decision."""
-
 from __future__ import annotations
 
 import logging
@@ -9,10 +7,6 @@ import structlog
 
 
 def configure_logging(level: str = "INFO") -> None:
-    """Configure structlog to emit structured (key=value / JSON-ish) logs.
-
-    Idempotent: safe to call multiple times.
-    """
     logging.basicConfig(
         format="%(message)s",
         stream=sys.stderr,
@@ -34,5 +28,4 @@ def configure_logging(level: str = "INFO") -> None:
 
 
 def get_logger(name: str) -> structlog.stdlib.BoundLogger:
-    """Return a bound structured logger."""
     return structlog.get_logger(name)  # type: ignore[no-any-return]

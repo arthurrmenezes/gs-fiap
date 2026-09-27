@@ -1,5 +1,3 @@
-"""Load and validate the taxonomy YAMLs into immutable in-memory objects."""
-
 from __future__ import annotations
 
 from functools import lru_cache
@@ -15,8 +13,6 @@ from specradar.textutil import fold
 
 
 class Taxonomy:
-    """Validated, queryable view over attributes + synonyms + sources."""
-
     def __init__(
         self,
         attributes: list[AttributeDef],
@@ -25,13 +21,12 @@ class Taxonomy:
         sources: list[SourceDef],
     ) -> None:
         self._attributes: dict[str, AttributeDef] = {a.id: a for a in attributes}
-        self._names = {fold(a.name): a.id for a in attributes}  # fold(name) -> attribute_id
-        self._attribute_synonyms = attribute_synonyms  # fold(label) -> attribute_id
-        self._value_synonyms = value_synonyms  # attribute_id -> {fold(value): canonical}
+        self._names = {fold(a.name): a.id for a in attributes}
+        self._attribute_synonyms = attribute_synonyms
+        self._value_synonyms = value_synonyms
         self._sources: dict[str, SourceDef] = {s.domain: s for s in sources}
         self._validate()
 
-    # -- construction validation --------------------------------------------
     def _validate(self) -> None:
         for label, attr_id in self._attribute_synonyms.items():
             if attr_id not in self._attributes:
@@ -44,13 +39,10 @@ class Taxonomy:
                     f"synonyms.yaml has value map for unknown attribute '{attr_id}'"
                 )
 
-    # -- attribute access ----------------------------------------------------
     def all_attributes(self) -> list[AttributeDef]:
-        """All attributes in taxonomy-declared order."""
         return list(self._attributes.values())
 
     def get(self, attribute_id: str) -> AttributeDef:
-        """Look up an attribute by canonical id, raising if unknown."""
         try:
             return self._attributes[attribute_id]
         except KeyError as exc:
@@ -60,12 +52,6 @@ class Taxonomy:
         return attribute_id in self._attributes
 
     def resolve_attribute(self, free_label: str) -> str:
-        """Map a free attribute label to a canonical attribute id.
-
-        A label that is already a canonical id passes through. Otherwise it is
-        looked up in the synonym map, then by display name (both case- and
-        accent-insensitive). Unknown → raise.
-        """
         if free_label in self._attributes:
             return free_label
         key = fold(free_label)
@@ -78,24 +64,16 @@ class Taxonomy:
         )
 
     def resolve_value(self, attribute_id: str, raw_value: str) -> str | None:
-        """Map a source value token to its canonical value for an attribute.
-
-        Returns the canonical value, or None if no synonym matches (caller decides
-        whether the raw value is already canonical / acceptable).
-        """
         per_attr = self._value_synonyms.get(attribute_id, {})
         return per_attr.get(fold(raw_value))
 
-    # -- source access -------------------------------------------------------
     def all_sources(self) -> list[SourceDef]:
         return list(self._sources.values())
 
     def source_for_domain(self, domain: str) -> SourceDef | None:
-        """Return the SourceDef whose domain matches (suffix-aware), else None."""
         domain = domain.lower().removeprefix("www.")
         if domain in self._sources:
             return self._sources[domain]
-        # allow subdomains: news.ford.com.br matches ford.com.br
         for src_domain, src in self._sources.items():
             if domain == src_domain or domain.endswith("." + src_domain):
                 return src
@@ -105,7 +83,6 @@ class Taxonomy:
         return self.source_for_domain(domain) is not None
 
 
-# --- YAML loading -----------------------------------------------------------
 def _read_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise TaxonomyError(f"taxonomy file not found: {path}")
@@ -165,7 +142,6 @@ def _load_sources(taxonomy_dir: Path) -> list[SourceDef]:
 
 
 def load_taxonomy(taxonomy_dir: Path | None = None) -> Taxonomy:
-    """Load the taxonomy from disk. Defaults to the configured taxonomy dir."""
     taxonomy_dir = taxonomy_dir or get_settings().taxonomy_dir
     attributes = _load_attributes(taxonomy_dir)
     attribute_synonyms, value_synonyms = _load_synonyms(taxonomy_dir)
@@ -175,5 +151,4 @@ def load_taxonomy(taxonomy_dir: Path | None = None) -> Taxonomy:
 
 @lru_cache(maxsize=1)
 def get_taxonomy() -> Taxonomy:
-    """Cached default taxonomy for app/runtime use."""
     return load_taxonomy()

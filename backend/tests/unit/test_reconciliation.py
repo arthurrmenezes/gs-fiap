@@ -1,5 +1,3 @@
-"""Reconciliation: coalesce by authority, conflict, anomaly, NA."""
-
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -62,7 +60,6 @@ def test_comparable_disagreement_is_conflict(taxonomy: Taxonomy) -> None:
 
 def test_within_tolerance_is_not_conflict(taxonomy: Taxonomy) -> None:
     attr = taxonomy.get("engine.power_cv")
-    # 397 vs 398 within 2% default tolerance.
     cands = [
         _nv("engine.power_cv", 397.0, tier=1, unit="cv"),
         _nv("engine.power_cv", 398.0, tier=1, unit="cv"),

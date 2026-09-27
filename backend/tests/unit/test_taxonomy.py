@@ -1,5 +1,3 @@
-"""Taxonomy loader: validity, the 5 hard types present, attribute resolution."""
-
 from __future__ import annotations
 
 import pytest
@@ -10,7 +8,6 @@ from specradar.taxonomy.models import DataType
 
 
 def test_loads_and_has_min_attributes(taxonomy: Taxonomy) -> None:
-    # CLAUDE.md §7 bootstrap target: ~35 attributes.
     assert len(taxonomy.all_attributes()) >= 35
 
 
@@ -47,6 +44,5 @@ def test_resolve_unknown_raises(taxonomy: Taxonomy) -> None:
 def test_source_allowlist_and_tiers(taxonomy: Taxonomy) -> None:
     src = taxonomy.source_for_domain("www.ford.com.br")
     assert src is not None and src.authority_tier == 1
-    # subdomain match
     assert taxonomy.is_allowed("vendas.ford.com.br") is True
     assert taxonomy.is_allowed("randomblog.example") is False

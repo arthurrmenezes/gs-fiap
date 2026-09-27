@@ -1,5 +1,3 @@
-// Tela "Pesquisar": o usuário informa marca, modelo, versão e a lista livre de
-// atributos. Ao tocar em "Gerar ficha", a ficha é montada e salva no histórico.
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -20,7 +18,6 @@ import type { SpecRequest } from '../../types';
 
 type Errors = Partial<Record<'make' | 'model' | 'version' | 'year', string>>;
 
-// Atributos sugeridos em chips (um de cada grupo, na ordem da taxonomia).
 const SUGGESTIONS = taxonomy
   .filter((attr, i) => taxonomy.findIndex((a) => a.group === attr.group) === i)
   .map((attr) => attr.name);
@@ -103,7 +100,6 @@ export default function SearchScreen() {
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    // Texto digitado e ainda não adicionado também entra na busca.
     const allAttributes = attributeInput.trim() ? [...attributes, attributeInput] : attributes;
     const request: SpecRequest = {
       make: make.trim(),

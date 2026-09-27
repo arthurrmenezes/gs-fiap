@@ -1,13 +1,9 @@
-// Modo offline: monta a ficha usando os dados embarcados no app.
-// Segue as mesmas regras do backend: mesma lista de campos (ordem da taxonomia),
-// atributo sem dado vira "NA" explícito e atributo desconhecido é informado.
 import raptorSheet from '../data/raptor-sheet.json';
 import taxonomyData from '../data/taxonomy.json';
 import type { SpecField, SpecRequest, SpecSheet, TaxonomyAttribute } from '../types';
 
 export const taxonomy: TaxonomyAttribute[] = taxonomyData.attributes;
 
-// Igual ao fold() do backend: minúsculas, sem acento, espaços simples.
 export function fold(text: string): string {
   return text
     .normalize('NFD')
@@ -17,10 +13,9 @@ export function fold(text: string): string {
     .replace(/\s+/g, ' ');
 }
 
-// Converte os rótulos livres digitados pelo usuário em ids da taxonomia.
 export function resolveLabels(labels: string[]): { ids: string[] | null; unknown: string[] } {
   const cleaned = labels.map((l) => l.trim()).filter(Boolean);
-  if (cleaned.length === 0) return { ids: null, unknown: [] }; // vazio = ficha completa
+  if (cleaned.length === 0) return { ids: null, unknown: [] };
 
   const ids: string[] = [];
   const unknown: string[] = [];

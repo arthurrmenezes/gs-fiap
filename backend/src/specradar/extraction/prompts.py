@@ -1,9 +1,3 @@
-"""Prompt + JSON Schema (tool) construction for evidence-anchored extraction.
-
-The output is FORCED by a JSON Schema / tool-use, never requested in prose
-(CLAUDE.md §8.1). This module builds the tool definition and the messages.
-"""
-
 from __future__ import annotations
 
 from typing import Any
@@ -30,7 +24,6 @@ _TOOL_NAME = "report_specs"
 
 
 def build_tool_schema(attributes: list[AttributeDef]) -> dict[str, Any]:
-    """Build the tool-use schema that forces structured, per-attribute output."""
     allowed_ids = [a.id for a in attributes]
     item_schema = {
         "type": "object",
@@ -61,7 +54,6 @@ def tool_name() -> str:
 
 
 def build_user_prompt(attributes: list[AttributeDef], document_text: str) -> str:
-    """Build the user message listing requested attributes + the document."""
     lines = ["Extract these attributes from the document below.\n", "Attributes:"]
     for a in attributes:
         hint = f" (unit: {a.canonical_unit})" if a.canonical_unit else ""

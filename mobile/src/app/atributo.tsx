@@ -1,5 +1,3 @@
-// Tela "Detalhe do atributo": mostra de onde veio o valor (fonte, trecho do
-// texto usado como evidência e confiança) — a parte "auditável" da ficha.
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';

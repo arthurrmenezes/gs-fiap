@@ -1,4 +1,3 @@
-// Componentes básicos reutilizados em todas as telas (botão, campo, card...).
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { ComponentProps, ReactNode } from 'react';
 import {
@@ -16,7 +15,6 @@ import { colors, radius, spacing, typography } from '../theme';
 
 export type IconName = ComponentProps<typeof Ionicons>['name'];
 
-// ---------------------------------------------------------------- Button
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 interface ButtonProps {
@@ -72,7 +70,6 @@ const buttonPalette: Record<ButtonVariant, { bg: string; fg: string; border: str
   danger: { bg: colors.surface, fg: colors.danger, border: colors.danger },
 };
 
-// ---------------------------------------------------------------- TextField
 interface TextFieldProps extends TextInputProps {
   label: string;
   error?: string;
@@ -92,7 +89,6 @@ export function TextField({ label, error, style, ...props }: TextFieldProps) {
   );
 }
 
-// ---------------------------------------------------------------- Card
 export function Card({ children, style }: { children: ReactNode; style?: ViewStyle }) {
   return <View style={[styles.card, style]}>{children}</View>;
 }
@@ -106,7 +102,6 @@ export function CardTitle({ icon, title }: { icon: IconName; title: string }) {
   );
 }
 
-// ---------------------------------------------------------------- Chip
 interface ChipProps {
   label: string;
   onPress?: () => void;
@@ -135,7 +130,6 @@ export function Chip({ label, onPress, selected = false, icon }: ChipProps) {
   );
 }
 
-// ---------------------------------------------------------------- Banner
 type BannerTone = 'info' | 'warning';
 
 export function Banner({ tone = 'info', text }: { tone?: BannerTone; text: string }) {
@@ -159,7 +153,6 @@ export function Banner({ tone = 'info', text }: { tone?: BannerTone; text: strin
   );
 }
 
-// ---------------------------------------------------------------- EmptyState
 export function EmptyState({ icon, title, text }: { icon: IconName; title: string; text: string }) {
   return (
     <View style={styles.empty}>

@@ -1,5 +1,3 @@
-"""API routes: health, taxonomy introspection, and the spec-sheet endpoint."""
-
 from __future__ import annotations
 
 from fastapi import APIRouter
@@ -23,7 +21,6 @@ def health() -> dict[str, str]:
 
 @router.get("/taxonomy")
 def taxonomy() -> dict[str, object]:
-    """Expose the canonical taxonomy (attributes + sources) for clients/tooling."""
     tax = get_taxonomy()
     return {
         "attributes": [a.model_dump(mode="json") for a in tax.all_attributes()],
@@ -32,11 +29,6 @@ def taxonomy() -> dict[str, object]:
 
 
 def resolve_labels(labels: list[str], tax: Taxonomy) -> tuple[list[str] | None, list[str]]:
-    """Split free labels into canonical ids and unrecognized labels.
-
-    No labels → None (full sheet). Unknown labels are reported back to the
-    client instead of failing the whole request.
-    """
     cleaned = [lbl.strip() for lbl in labels if lbl.strip()]
     if not cleaned:
         return None, []
@@ -55,7 +47,6 @@ def resolve_labels(labels: list[str], tax: Taxonomy) -> tuple[list[str] | None, 
 
 @router.post("/spec", response_model=SpecSheetResponse)
 def spec(request: SpecRequest) -> SpecSheetResponse:
-    """Build the standardized spec sheet for a vehicle version."""
     tax = get_taxonomy()
     settings = get_settings()
     vehicle = request.to_vehicle_key()

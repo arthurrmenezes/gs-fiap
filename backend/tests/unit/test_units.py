@@ -1,5 +1,3 @@
-"""Unit conversions — tested in both directions (CLAUDE.md §12, §15)."""
-
 from __future__ import annotations
 
 import math
@@ -14,12 +12,12 @@ from specradar.normalization.units import normalize_scalar, parse_number, to_can
     ("raw", "expected"),
     [
         ("397", 397.0),
-        ("3.0", 3.0),  # dot decimal
-        ("5,8", 5.8),  # PT-BR comma decimal
-        ("2.283", 2283.0),  # dot thousands
-        ("180.000", 180000.0),  # dot thousands
-        ("1.234,56", 1234.56),  # PT-BR full
-        ("1,234.56", 1234.56),  # EN full
+        ("3.0", 3.0),
+        ("5,8", 5.8),
+        ("2.283", 2283.0),
+        ("180.000", 180000.0),
+        ("1.234,56", 1234.56),
+        ("1,234.56", 1234.56),
         ("-12,5", -12.5),
     ],
 )
@@ -33,10 +31,8 @@ def test_parse_number_no_number() -> None:
 
 
 def test_power_hp_to_cv_and_back() -> None:
-    # hp and cv are NOT equal; 100 hp ≈ 101.39 cv.
     cv = to_canonical(100.0, "hp", "cv")
     assert cv == pytest.approx(101.387, abs=1e-3)
-    # round trip
     hp_back = cv / 1.01387
     assert hp_back == pytest.approx(100.0, abs=1e-3)
 
@@ -55,7 +51,6 @@ def test_displacement_cc_to_litres() -> None:
 
 
 def test_consumption_l_per_100km_reciprocal() -> None:
-    # 8 L/100km == 12.5 km/L
     assert to_canonical(8.0, "L/100km", "km/L") == pytest.approx(12.5)
 
 

@@ -1,18 +1,10 @@
-"""HTML/PDF → clean text. Pure and dependency-light (stdlib html.parser).
-
-The cleaned text is what the LLM reads AND what the verifier checks evidence
-against, so cleaning must be deterministic and preserve the literal spec wording.
-"""
-
 from __future__ import annotations
 
 from html.parser import HTMLParser
 
 from specradar.textutil import normalize_whitespace
 
-# Tags whose text content is noise, never spec data.
 _SKIP_TAGS = {"script", "style", "noscript", "head", "svg", "template"}
-# Block tags that should introduce a newline so adjacent values do not merge.
 _BLOCK_TAGS = {
     "p",
     "div",
@@ -65,24 +57,18 @@ class _TextExtractor(HTMLParser):
 
 
 def clean_html(html: str) -> str:
-    """Strip HTML to readable text, preserving spec wording and line structure."""
     parser = _TextExtractor()
     parser.feed(html)
     raw = parser.text()
-    # Collapse intra-line whitespace per line, drop empty lines.
     lines = [normalize_whitespace(line) for line in raw.splitlines()]
     return "\n".join(line for line in lines if line)
 
 
 def clean_text(content: str, content_type: str) -> str:
-    """Dispatch cleaning by content type. Plain text passes through normalized."""
     ctype = content_type.lower()
     if "html" in ctype:
         return clean_html(content)
     if "pdf" in ctype:
-        # PDF extraction (pdfminer/pypdf) is out of MVP scope for offline tests;
-        # callers that fetch PDFs should pass already-extracted text here.
         raise NotImplementedError("PDF extraction not wired in MVP; pass extracted text")
-    # treat as plain text
     lines = [normalize_whitespace(line) for line in content.splitlines()]
     return "\n".join(line for line in lines if line)

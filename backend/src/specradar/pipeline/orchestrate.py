@@ -1,15 +1,3 @@
-"""The 6-stage pipeline, wired together. Pure stages + injectable I/O clients.
-
-    [2] gather_documents  : resolve → fetch → clean  (needs SearchClient, Fetcher)
-    [3] extract           : LLM + verify              (needs LLMClient)
-    [4] normalize         : deterministic
-    [5] reconcile         : coalesce / conflict / anomaly
-
-The extraction half ([3]–[5]) is pure given documents + an LLMClient, so the
-golden test and CLI demo can run it fully offline with fixture documents and a
-fixture LLM client.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -41,7 +29,6 @@ class PipelineResult:
     documents: list[Document] = field(default_factory=list)
 
 
-# ---------------------------------------------------------------- [2] sources
 def gather_documents(
     vehicle: VehicleKey,
     taxonomy: Taxonomy,
@@ -50,7 +37,6 @@ def gather_documents(
     *,
     now: datetime | None = None,
 ) -> list[Document]:
-    """Resolve candidate sources, fetch, and clean into Documents."""
     now = now or datetime.now(UTC)
     candidates = resolve_sources(vehicle, taxonomy, search_client)
     documents: list[Document] = []
@@ -74,14 +60,12 @@ def gather_documents(
     return documents
 
 
-# ------------------------------------------------- [3]+[4] extract & normalize
 def extract_and_normalize(
     documents: list[Document],
     attributes: list[AttributeDef],
     llm_client: LLMClient,
     taxonomy: Taxonomy,
 ) -> dict[str, list[NormalizedValue]]:
-    """Extract + verify + normalize, grouping candidate values per attribute."""
     by_id = {a.id: a for a in attributes}
     grouped: dict[str, list[NormalizedValue]] = defaultdict(list)
     for doc in documents:
@@ -96,7 +80,6 @@ def extract_and_normalize(
     return grouped
 
 
-# ---------------------------------------------------------------- [5] reconcile
 def reconcile_specs(
     vehicle: VehicleKey,
     attributes: list[AttributeDef],
@@ -104,7 +87,6 @@ def reconcile_specs(
     *,
     now: datetime | None = None,
 ) -> list[ReconciledSpec]:
-    """Reconcile every requested attribute (missing ones become explicit NA)."""
     now = now or datetime.now(UTC)
     return [
         reconcile_attribute(vehicle, attr, grouped.get(attr.id, []), now=now) for attr in attributes
@@ -120,14 +102,12 @@ def run_extraction_pipeline(
     attributes: list[AttributeDef] | None = None,
     now: datetime | None = None,
 ) -> list[ReconciledSpec]:
-    """Stages [3]–[5] given documents. Offline-friendly (no network)."""
     taxonomy = taxonomy or get_taxonomy()
     attributes = attributes if attributes is not None else taxonomy.all_attributes()
     grouped = extract_and_normalize(documents, attributes, llm_client, taxonomy)
     return reconcile_specs(vehicle, attributes, grouped, now=now)
 
 
-# ---------------------------------------------------------------- full run
 def run(
     vehicle: VehicleKey,
     documents: list[Document],
@@ -137,10 +117,6 @@ def run(
     attribute_ids: list[str] | None = None,
     now: datetime | None = None,
 ) -> PipelineResult:
-    """Run stages [3]–[5] for already-gathered documents.
-
-    `attribute_ids` are canonical ids (already resolved). None → full sheet.
-    """
     taxonomy = taxonomy or get_taxonomy()
     if attribute_ids is None:
         attributes = taxonomy.all_attributes()
@@ -159,9 +135,7 @@ def run(
     )
 
 
-# ---------------------------------------------------------------- CLI
 def main(argv: list[str] | None = None) -> int:
-    """CLI entry point. Offline by default using the bundled demo fixture."""
     parser = argparse.ArgumentParser(description="Run the SpecRadar pipeline for one vehicle.")
     parser.add_argument("--make", required=True)
     parser.add_argument("--model", required=True)
@@ -182,7 +156,6 @@ def main(argv: list[str] | None = None) -> int:
         make=args.make, model=args.model, version=args.version or args.model, model_year=args.year
     )
 
-    # Offline demo path: load fixture documents + a fixture LLM client.
     from specradar.pipeline.fixtures import FixtureLLMClient, load_fixture
 
     fixture_dir = args.fixture

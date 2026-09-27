@@ -1,17 +1,3 @@
-"""Coalesce by authority into a single ReconciledSpec, with explicit status.
-
-Decision order for an attribute with one or more candidate values:
-  1. no candidates           → NA (value null).
-  2. comparable disagreement → CONFLICT (winner + alternatives preserved).
-  3. anomaly                 → ANOMALY.
-  4. low confidence          → LOW_CONFIDENCE.
-  5. otherwise               → OK.
-
-The winner is the highest-authority value (lowest tier; ties broken by highest
-confidence). "Comparable" disagreement means two values of the SAME tier differ
-beyond tolerance — lower-authority disagreement is simply overridden by coalesce.
-"""
-
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -24,7 +10,6 @@ from specradar.taxonomy.models import AttributeDef
 
 log = get_logger("reconciliation")
 
-# Confidence below this is reported as LOW_CONFIDENCE.
 _LOW_CONFIDENCE_THRESHOLD = 0.5
 
 
@@ -51,17 +36,14 @@ def reconcile_attribute(
     *,
     now: datetime | None = None,
 ) -> ReconciledSpec:
-    """Reduce all candidate values for one attribute to a single reconciled spec."""
     now = now or datetime.now(UTC)
 
     if not candidates:
         return _na(vehicle, attr, now)
 
-    # Highest authority first; break ties by confidence.
     ordered = sorted(candidates, key=lambda v: (v.source_tier, -v.confidence))
     winner = ordered[0]
 
-    # Comparable disagreement: same tier as winner, value differs beyond tolerance.
     comparable = [v for v in ordered if v.source_tier == winner.source_tier]
     conflicting = [v for v in comparable if not values_equal(attr, v.value_norm, winner.value_norm)]
 

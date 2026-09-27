@@ -1,9 +1,7 @@
-// Funções de formatação usadas nas telas (valores, datas, grupos).
 import type { SheetMode, SpecField, SpecSheet, SpecValue } from '../types';
 
 export const NOT_AVAILABLE = 'Não disponível';
 
-// Nome amigável de cada grupo da taxonomia.
 const GROUP_LABELS: Record<string, string> = {
   powertrain: 'Motor e transmissão',
   dynamics: 'Modos de condução',
@@ -20,7 +18,6 @@ const GROUP_LABELS: Record<string, string> = {
   commercial: 'Preço e garantia',
 };
 
-// Como cada unidade canônica aparece na tela.
 const UNIT_LABELS: Record<string, string> = {
   gears: 'marchas',
   seats: 'lugares',
@@ -29,7 +26,6 @@ const UNIT_LABELS: Record<string, string> = {
   in: '"',
 };
 
-// Nomes dos sub-campos dos tipos compostos (motor, câmbio, pneu).
 export const SUBFIELD_LABELS: Record<string, string> = {
   layout: 'Arranjo',
   cylinders: 'Cilindros',
@@ -69,7 +65,6 @@ export function modeLabel(mode: SheetMode): string {
   return MODE_LABELS[mode] ?? mode;
 }
 
-// Formata número no padrão brasileiro: 1234.5 -> "1.234,5"
 export function formatNumber(value: number): string {
   const rounded = Math.round(value * 100) / 100;
   const [intPart, decPart] = rounded.toFixed(2).replace(/0+$/, '').replace(/\.$/, '').split('.');
@@ -78,18 +73,15 @@ export function formatNumber(value: number): string {
 }
 
 function formatObject(obj: Record<string, unknown>): string {
-  // Pneu: 285/70 R17
   if ('width' in obj && 'aspect_ratio' in obj && 'rim_diameter_in' in obj) {
     return `${obj.width}/${obj.aspect_ratio} R${obj.rim_diameter_in}`;
   }
-  // Motor: V6 3.0 L Biturbo
   if ('cylinders' in obj) {
     const layout = obj.layout ? `${obj.layout}${obj.cylinders ?? ''}` : `${obj.cylinders} cil.`;
     const displacement =
       typeof obj.displacement_l === 'number' ? `${obj.displacement_l.toFixed(1)} L` : '';
     return [layout, displacement, obj.aspiration].filter(Boolean).join(' ');
   }
-  // Câmbio: Automática · 10 marchas · paddle shifters
   if ('gears' in obj || 'type' in obj) {
     return [
       obj.type,
@@ -142,7 +134,6 @@ export function domainOf(url: string | null): string {
   return match ? match[1] : url;
 }
 
-// Agrupa os campos pelo grupo, mantendo a ordem da taxonomia.
 export function groupFields(fields: SpecField[]): { title: string; data: SpecField[] }[] {
   const sections: { title: string; data: SpecField[] }[] = [];
   const index = new Map<string, number>();
@@ -162,7 +153,6 @@ export function countByStatus(fields: SpecField[]) {
   return { found, missing, alerts: fields.length - found - missing, total: fields.length };
 }
 
-// Texto da ficha para compartilhar (WhatsApp, e-mail...).
 export function sheetToText(sheet: SpecSheet): string {
   const lines = [
     `SpecRadar — ${vehicleTitle(sheet)} (${vehicleSubtitle(sheet)})`,

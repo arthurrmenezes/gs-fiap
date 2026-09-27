@@ -1,5 +1,3 @@
-"""Parser tests: tire (DIMENSIONAL), engine + transmission (COMPOSITE)."""
-
 from __future__ import annotations
 
 import pytest

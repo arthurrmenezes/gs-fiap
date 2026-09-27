@@ -1,16 +1,3 @@
-"""Offline fixtures: load fixture documents + a sequential fixture LLM client.
-
-Used by the CLI demo and the golden test to run stages [3]–[6] with no network.
-A fixture dir contains:
-
-    extraction.json   — {"documents": [{url, domain, source_tier, text_file, values:[...]}]}
-    documents/<file>  — the cleaned source text for each document
-
-The fixture LLM client returns the canned `values` per document in order, exactly
-as a real LLM tool call would — so the evidence verifier still runs for real
-(snippets must be literal substrings of the document text).
-"""
-
 from __future__ import annotations
 
 import json
@@ -24,8 +11,6 @@ from specradar.sources.fetcher import content_hash
 
 
 class FixtureLLMClient:
-    """Returns canned tool outputs per call, in document order."""
-
     def __init__(self, responses: list[list[dict[str, Any]]]) -> None:
         self._responses = responses
         self._index = 0
@@ -50,7 +35,6 @@ def load_fixture(
     *,
     now: datetime | None = None,
 ) -> tuple[list[Document], list[list[dict[str, Any]]]]:
-    """Load fixture documents and their canned extraction responses (in order)."""
     now = now or datetime(2026, 1, 1, tzinfo=UTC)
     base = Path(fixture_dir)
     manifest_path = base / "extraction.json"

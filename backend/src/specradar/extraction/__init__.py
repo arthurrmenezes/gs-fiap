@@ -1,5 +1,3 @@
-"""Stage [3]: evidence-anchored extraction. The AI reads, never invents."""
-
 from specradar.extraction.extractor import (
     Extractor,
     LLMClient,

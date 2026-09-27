@@ -1,10 +1,3 @@
-"""Resolve which pipeline clients to use for an API request.
-
-Live mode requires Anthropic + search keys. Without them the API runs in demo
-mode: the bundled offline fixture is used for vehicles that have one, and any
-other vehicle gets the same sheet with every field as explicit NA (no sources).
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -15,7 +8,6 @@ from specradar.pipeline import orchestrate
 from specradar.pipeline.fixtures import FixtureLLMClient, load_fixture
 from specradar.taxonomy.loader import Taxonomy
 
-# Bundled offline demos: (make, model) → fixture dir name under examples/.
 _OFFLINE_FIXTURES = {
     ("ford", "ranger raptor"): "ranger_raptor",
 }
@@ -24,7 +16,7 @@ _OFFLINE_FIXTURES = {
 @dataclass
 class RunOutcome:
     result: orchestrate.PipelineResult
-    mode: str  # "live" | "demo"
+    mode: str
 
 
 def _fixture_for(vehicle: VehicleKey) -> str | None:
@@ -38,13 +30,11 @@ def run_for_request(
     settings: Settings,
     taxonomy: Taxonomy,
 ) -> RunOutcome:
-    """Run the pipeline for a request, choosing live or demo clients."""
     if settings.anthropic_api_key and settings.search_api_key:
         return RunOutcome(_run_live(vehicle, attribute_ids, settings, taxonomy), "live")
 
     fixture_name = _fixture_for(vehicle)
     if fixture_name is None:
-        # No data for this vehicle: still return the full, same-format sheet (all NA).
         result = orchestrate.run(
             vehicle, [], FixtureLLMClient([]), taxonomy=taxonomy, attribute_ids=attribute_ids
         )

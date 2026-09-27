@@ -1,5 +1,3 @@
-"""Build the standardized SpecSheetResponse from reconciled specs + taxonomy."""
-
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -19,7 +17,6 @@ def build_spec_sheet(
     unknown_attributes: list[str] | None = None,
     generated_at: datetime | None = None,
 ) -> SpecSheetResponse:
-    """Project reconciled specs into the always-same-format sheet, grouped order."""
     fields = []
     for spec in specs:
         attr = taxonomy.get(spec.attribute_id)
