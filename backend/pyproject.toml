@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "specradar"
-version = "0.1.0"
-description = "Automotive competitive intelligence — heterogeneous web to a canonical, auditable spec base."
+version = "1.0.0"
+description = "SpecRadar backend (FastAPI) — standardized vehicle spec sheets for the mobile app."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "Proprietary — FIAP x Ford academic project" }
@@ -30,11 +30,6 @@ dev = [
     "mypy>=1.9",
     "types-PyYAML>=6.0",
 ]
-# Heavy/optional runtime deps — not required for unit + golden tests.
-fetch = ["playwright>=1.43"]
-storage = ["google-cloud-bigquery>=3.19"]
-orchestration = ["apache-airflow>=2.8"]
-ingest = ["openpyxl>=3.1"]
 
 [project.scripts]
 specradar = "specradar.pipeline.orchestrate:main"
@@ -68,7 +63,7 @@ disallow_untyped_defs = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["yaml", "anthropic.*", "google.*", "airflow.*", "playwright.*", "openpyxl.*"]
+module = ["yaml", "anthropic.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

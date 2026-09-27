@@ -61,6 +61,10 @@ class SpecSheetResponse(BaseModel):
     market: str
     generated_at: datetime
     source_count: int
+    # "demo" = bundled offline data; "live" = real search + LLM extraction.
+    mode: str = "demo"
+    # Labels the user typed that could not be mapped to the taxonomy.
+    unknown_attributes: list[str] = Field(default_factory=list)
     fields: list[SpecField]
 
     @property

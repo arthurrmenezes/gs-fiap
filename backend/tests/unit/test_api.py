@@ -39,6 +39,33 @@ def test_spec_sheet_offline_fixture(client: TestClient) -> None:
     assert fields["emissions.co2_gkm"]["status"] == "NA"
 
 
-def test_spec_sheet_unknown_vehicle_offline_503(client: TestClient) -> None:
+def test_spec_sheet_unknown_vehicle_returns_same_format_all_na(client: TestClient) -> None:
+    """A vehicle with no data still gets the full sheet, every field explicit NA."""
+    raptor = client.post(
+        "/api/spec", json={"make": "Ford", "model": "Ranger Raptor", "version": "Raptor"}
+    ).json()
     resp = client.post("/api/spec", json={"make": "Tesla", "model": "Cybertruck", "version": "AWD"})
-    assert resp.status_code == 503
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["source_count"] == 0
+    assert [f["attribute_id"] for f in body["fields"]] == [
+        f["attribute_id"] for f in raptor["fields"]
+    ]
+    assert all(f["status"] == "NA" and f["value"] is None for f in body["fields"])
+
+
+def test_spec_sheet_filters_attributes_and_reports_unknown(client: TestClient) -> None:
+    resp = client.post(
+        "/api/spec",
+        json={
+            "make": "Ford",
+            "model": "Ranger Raptor",
+            "version": "Raptor",
+            "attributes": ["potência", "Tração", "cor do banco"],
+        },
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert [f["attribute_id"] for f in body["fields"]] == ["engine.power_cv", "drivetrain"]
+    assert body["unknown_attributes"] == ["cor do banco"]
+    assert body["mode"] == "demo"

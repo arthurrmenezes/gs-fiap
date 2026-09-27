@@ -25,6 +25,7 @@ class Taxonomy:
         sources: list[SourceDef],
     ) -> None:
         self._attributes: dict[str, AttributeDef] = {a.id: a for a in attributes}
+        self._names = {fold(a.name): a.id for a in attributes}  # fold(name) -> attribute_id
         self._attribute_synonyms = attribute_synonyms  # fold(label) -> attribute_id
         self._value_synonyms = value_synonyms  # attribute_id -> {fold(value): canonical}
         self._sources: dict[str, SourceDef] = {s.domain: s for s in sources}
@@ -62,13 +63,16 @@ class Taxonomy:
         """Map a free attribute label to a canonical attribute id.
 
         A label that is already a canonical id passes through. Otherwise it is
-        looked up in the synonym map (case/accent-insensitive). Unknown → raise.
+        looked up in the synonym map, then by display name (both case- and
+        accent-insensitive). Unknown → raise.
         """
         if free_label in self._attributes:
             return free_label
         key = fold(free_label)
         if key in self._attribute_synonyms:
             return self._attribute_synonyms[key]
+        if key in self._names:
+            return self._names[key]
         raise UnknownAttributeError(
             f"cannot resolve attribute label '{free_label}' to the taxonomy"
         )

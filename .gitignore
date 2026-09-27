@@ -1,25 +1,18 @@
-# Python
+# Python (backend)
 __pycache__/
 *.py[cod]
 *.egg-info/
-.eggs/
 build/
 dist/
 .venv/
 venv/
-
-# Tooling caches
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-.coverage
-htmlcov/
 
 # Secrets / local config
 .env
 *.key
-*-sa.json
-gcp-*.json
 
 # Editor / OS
 .vscode/
@@ -27,24 +20,7 @@ gcp-*.json
 .DS_Store
 Thumbs.db
 
-# Local raw document cache
-.cache/
-raw_cache/
+# Mobile: see mobile/.gitignore (node_modules, .expo, android/, ios/)
 
-# Pipeline local outputs
-output/
-*.jsonl
-
-# Frontend
-frontend/node_modules/
-frontend/dist/
-*.tsbuildinfo
-
-# Playwright
-playwright-report/
-test-results/
-.playwright/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
+# APK gerado (entregar via GitHub Releases / arquivo)
+release/

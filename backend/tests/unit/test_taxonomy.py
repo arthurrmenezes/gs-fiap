@@ -35,6 +35,10 @@ def test_resolve_synonym(taxonomy: Taxonomy) -> None:
     assert taxonomy.resolve_attribute("Câmbio") == "transmission"
 
 
+def test_resolve_display_name(taxonomy: Taxonomy) -> None:
+    assert taxonomy.resolve_attribute("configuração do MOTOR") == "engine.configuration"
+
+
 def test_resolve_unknown_raises(taxonomy: Taxonomy) -> None:
     with pytest.raises(UnknownAttributeError):
         taxonomy.resolve_attribute("cor do banco do motorista")

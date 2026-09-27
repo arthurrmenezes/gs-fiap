@@ -1,0 +1,490 @@
+{
+  "attributes": [
+    {
+      "id": "engine.configuration",
+      "name": "Configuração do motor",
+      "group": "powertrain",
+      "data_type": "COMPOSITE",
+      "canonical_unit": null,
+      "synonyms": [
+        "motor",
+        "motorizacao"
+      ]
+    },
+    {
+      "id": "engine.power_cv",
+      "name": "Potência",
+      "group": "powertrain",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "cv",
+      "synonyms": [
+        "potencia",
+        "potencia maxima",
+        "cavalos",
+        "cv"
+      ]
+    },
+    {
+      "id": "engine.torque_nm",
+      "name": "Torque",
+      "group": "powertrain",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "Nm",
+      "synonyms": [
+        "torque",
+        "torque maximo"
+      ]
+    },
+    {
+      "id": "engine.displacement_l",
+      "name": "Cilindrada",
+      "group": "powertrain",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "L",
+      "synonyms": [
+        "cilindrada"
+      ]
+    },
+    {
+      "id": "engine.fuel",
+      "name": "Combustível",
+      "group": "powertrain",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "combustivel"
+      ]
+    },
+    {
+      "id": "engine.aspiration",
+      "name": "Aspiração",
+      "group": "powertrain",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": []
+    },
+    {
+      "id": "transmission",
+      "name": "Transmissão",
+      "group": "powertrain",
+      "data_type": "COMPOSITE",
+      "canonical_unit": null,
+      "synonyms": [
+        "cambio",
+        "transmissao"
+      ]
+    },
+    {
+      "id": "transmission.gears",
+      "name": "Número de marchas",
+      "group": "powertrain",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "gears",
+      "synonyms": [
+        "marchas",
+        "quantidade de marchas"
+      ]
+    },
+    {
+      "id": "drivetrain",
+      "name": "Tração",
+      "group": "powertrain",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "tracao",
+        "tracao 4x4",
+        "tracao integral"
+      ]
+    },
+    {
+      "id": "drive_modes",
+      "name": "Modos de condução",
+      "group": "dynamics",
+      "data_type": "ENUM_LIST",
+      "canonical_unit": null,
+      "synonyms": [
+        "modos de conducao",
+        "drive modes"
+      ]
+    },
+    {
+      "id": "steering_modes",
+      "name": "Modos de direção",
+      "group": "dynamics",
+      "data_type": "ENUM_LIST",
+      "canonical_unit": null,
+      "synonyms": [
+        "modos de direcao"
+      ]
+    },
+    {
+      "id": "exhaust_modes",
+      "name": "Modos de escapamento",
+      "group": "dynamics",
+      "data_type": "ENUM_LIST",
+      "canonical_unit": null,
+      "synonyms": [
+        "modos de escapamento"
+      ]
+    },
+    {
+      "id": "damper_modes",
+      "name": "Modos de amortecimento",
+      "group": "dynamics",
+      "data_type": "ENUM_LIST",
+      "canonical_unit": null,
+      "synonyms": [
+        "modos de amortecimento"
+      ]
+    },
+    {
+      "id": "performance.0_100_kmh_s",
+      "name": "Aceleração 0–100 km/h",
+      "group": "performance",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "s",
+      "synonyms": [
+        "0 a 100",
+        "0-100",
+        "aceleracao"
+      ]
+    },
+    {
+      "id": "performance.top_speed_kmh",
+      "name": "Velocidade máxima",
+      "group": "performance",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "km/h",
+      "synonyms": [
+        "velocidade maxima"
+      ]
+    },
+    {
+      "id": "fuel.consumption_city_kml",
+      "name": "Consumo urbano",
+      "group": "efficiency",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "km/L",
+      "synonyms": [
+        "consumo urbano",
+        "consumo cidade"
+      ]
+    },
+    {
+      "id": "fuel.consumption_road_kml",
+      "name": "Consumo rodoviário",
+      "group": "efficiency",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "km/L",
+      "synonyms": [
+        "consumo rodoviario",
+        "consumo estrada"
+      ]
+    },
+    {
+      "id": "emissions.co2_gkm",
+      "name": "Emissão de CO2",
+      "group": "efficiency",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "g/km",
+      "synonyms": [
+        "emissao de co2"
+      ]
+    },
+    {
+      "id": "suspension.dampers",
+      "name": "Amortecedores",
+      "group": "chassis",
+      "data_type": "TEXT",
+      "canonical_unit": null,
+      "synonyms": [
+        "amortecedores"
+      ]
+    },
+    {
+      "id": "suspension.front",
+      "name": "Suspensão dianteira",
+      "group": "chassis",
+      "data_type": "TEXT",
+      "canonical_unit": null,
+      "synonyms": [
+        "suspensao dianteira"
+      ]
+    },
+    {
+      "id": "suspension.rear",
+      "name": "Suspensão traseira",
+      "group": "chassis",
+      "data_type": "TEXT",
+      "canonical_unit": null,
+      "synonyms": [
+        "suspensao traseira"
+      ]
+    },
+    {
+      "id": "brakes.front",
+      "name": "Freios dianteiros",
+      "group": "chassis",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "freios dianteiros"
+      ]
+    },
+    {
+      "id": "brakes.rear",
+      "name": "Freios traseiros",
+      "group": "chassis",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "freios traseiros"
+      ]
+    },
+    {
+      "id": "wheels.tires",
+      "name": "Pneus",
+      "group": "wheels",
+      "data_type": "DIMENSIONAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "pneus",
+        "pneu"
+      ]
+    },
+    {
+      "id": "wheels.rim_diameter_in",
+      "name": "Aro",
+      "group": "wheels",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "in",
+      "synonyms": [
+        "aro"
+      ]
+    },
+    {
+      "id": "wheels.material",
+      "name": "Material das rodas",
+      "group": "wheels",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "rodas"
+      ]
+    },
+    {
+      "id": "dimensions.length_mm",
+      "name": "Comprimento",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "mm",
+      "synonyms": [
+        "comprimento"
+      ]
+    },
+    {
+      "id": "dimensions.wheelbase_mm",
+      "name": "Entre-eixos",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "mm",
+      "synonyms": [
+        "entre-eixos",
+        "entre eixos",
+        "distancia entre-eixos"
+      ]
+    },
+    {
+      "id": "dimensions.ground_clearance_mm",
+      "name": "Altura livre do solo",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "mm",
+      "synonyms": [
+        "altura livre do solo",
+        "vao livre do solo"
+      ]
+    },
+    {
+      "id": "capacity.curb_weight_kg",
+      "name": "Peso em ordem de marcha",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "kg",
+      "synonyms": [
+        "peso",
+        "peso em ordem de marcha"
+      ]
+    },
+    {
+      "id": "capacity.payload_kg",
+      "name": "Carga útil",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "kg",
+      "synonyms": [
+        "carga util",
+        "capacidade de carga"
+      ]
+    },
+    {
+      "id": "capacity.towing_kg",
+      "name": "Capacidade de reboque",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "kg",
+      "synonyms": [
+        "capacidade de reboque",
+        "reboque"
+      ]
+    },
+    {
+      "id": "capacity.fuel_tank_l",
+      "name": "Tanque de combustível",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "L",
+      "synonyms": [
+        "tanque",
+        "tanque de combustivel"
+      ]
+    },
+    {
+      "id": "body.style",
+      "name": "Carroceria",
+      "group": "dimensions",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "carroceria",
+        "cabine"
+      ]
+    },
+    {
+      "id": "body.seats",
+      "name": "Lugares",
+      "group": "dimensions",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "seats",
+      "synonyms": [
+        "lugares",
+        "ocupantes"
+      ]
+    },
+    {
+      "id": "headlights",
+      "name": "Faróis",
+      "group": "lighting",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "farois",
+        "farol"
+      ]
+    },
+    {
+      "id": "infotainment.screen_in",
+      "name": "Tela multimídia",
+      "group": "technology",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "in",
+      "synonyms": [
+        "multimidia",
+        "central multimidia",
+        "tela"
+      ]
+    },
+    {
+      "id": "infotainment.cluster_in",
+      "name": "Painel de instrumentos digital",
+      "group": "technology",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "in",
+      "synonyms": [
+        "painel digital",
+        "quadro de instrumentos"
+      ]
+    },
+    {
+      "id": "safety.airbags",
+      "name": "Airbags",
+      "group": "safety",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "airbags",
+      "synonyms": [
+        "airbags"
+      ]
+    },
+    {
+      "id": "features.adas",
+      "name": "ADAS",
+      "group": "safety",
+      "data_type": "ENUM_LIST",
+      "canonical_unit": null,
+      "synonyms": []
+    },
+    {
+      "id": "features.sunroof",
+      "name": "Teto solar",
+      "group": "comfort",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "teto solar"
+      ]
+    },
+    {
+      "id": "features.seat_material",
+      "name": "Revestimento dos bancos",
+      "group": "comfort",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "bancos",
+        "revestimento"
+      ]
+    },
+    {
+      "id": "offroad.diff_lock",
+      "name": "Bloqueio de diferencial",
+      "group": "offroad",
+      "data_type": "CATEGORICAL",
+      "canonical_unit": null,
+      "synonyms": [
+        "bloqueio de diferencial",
+        "diferencial blocante"
+      ]
+    },
+    {
+      "id": "offroad.terrain_management",
+      "name": "Gerenciamento de terreno",
+      "group": "offroad",
+      "data_type": "BOOLEAN",
+      "canonical_unit": null,
+      "synonyms": []
+    },
+    {
+      "id": "warranty.years",
+      "name": "Garantia",
+      "group": "commercial",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "years",
+      "synonyms": [
+        "garantia"
+      ]
+    },
+    {
+      "id": "price.brl",
+      "name": "Preço",
+      "group": "commercial",
+      "data_type": "SCALAR_UNIT",
+      "canonical_unit": "BRL",
+      "synonyms": [
+        "preco",
+        "preco sugerido",
+        "valor"
+      ]
+    }
+  ]
+}

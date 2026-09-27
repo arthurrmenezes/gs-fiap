@@ -4,7 +4,6 @@
     [3] extract           : LLM + verify              (needs LLMClient)
     [4] normalize         : deterministic
     [5] reconcile         : coalesce / conflict / anomaly
-    [6] persist           : StorageWriter
 
 The extraction half ([3]–[5]) is pure given documents + an LLMClient, so the
 golden test and CLI demo can run it fully offline with fixture documents and a
@@ -28,7 +27,6 @@ from specradar.reconciliation.coalesce import reconcile_attribute
 from specradar.sources.cleaner import clean_text
 from specradar.sources.fetcher import Fetcher
 from specradar.sources.resolver import SearchClient, resolve_sources
-from specradar.storage.bigquery import InMemoryWriter, StorageWriter
 from specradar.taxonomy.loader import Taxonomy, get_taxonomy
 from specradar.taxonomy.models import AttributeDef
 
@@ -40,7 +38,6 @@ class PipelineResult:
     vehicle: VehicleKey
     specs: list[ReconciledSpec]
     document_count: int
-    rows_written: int = 0
     documents: list[Document] = field(default_factory=list)
 
 
@@ -137,28 +134,27 @@ def run(
     llm_client: LLMClient,
     *,
     taxonomy: Taxonomy | None = None,
-    requested_labels: list[str] | None = None,
-    writer: StorageWriter | None = None,
+    attribute_ids: list[str] | None = None,
     now: datetime | None = None,
 ) -> PipelineResult:
-    """Run stages [3]–[6] for already-gathered documents."""
+    """Run stages [3]–[5] for already-gathered documents.
+
+    `attribute_ids` are canonical ids (already resolved). None → full sheet.
+    """
     taxonomy = taxonomy or get_taxonomy()
-    if requested_labels:
-        ids = {taxonomy.resolve_attribute(lbl) for lbl in requested_labels}
-        attributes = [a for a in taxonomy.all_attributes() if a.id in ids]
-    else:
+    if attribute_ids is None:
         attributes = taxonomy.all_attributes()
+    else:
+        wanted = set(attribute_ids)
+        attributes = [a for a in taxonomy.all_attributes() if a.id in wanted]
 
     specs = run_extraction_pipeline(
         vehicle, documents, llm_client, taxonomy=taxonomy, attributes=attributes, now=now
     )
-    writer = writer or InMemoryWriter()
-    rows = writer.write_specs(specs)
     return PipelineResult(
         vehicle=vehicle,
         specs=specs,
         document_count=len(documents),
-        rows_written=rows,
         documents=documents,
     )
 

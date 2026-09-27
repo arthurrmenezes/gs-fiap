@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
-from specradar.api.runner import PipelineUnavailableError, run_for_request
+from specradar.api.runner import run_for_request
 from specradar.api.schemas import SpecRequest, SpecSheetResponse
 from specradar.api.sheet import build_spec_sheet
 from specradar.config import get_settings
 from specradar.errors import UnknownAttributeError
 from specradar.logging import get_logger
-from specradar.taxonomy.loader import get_taxonomy
+from specradar.taxonomy.loader import Taxonomy, get_taxonomy
 
 router = APIRouter()
 log = get_logger("api")
@@ -31,19 +31,43 @@ def taxonomy() -> dict[str, object]:
     }
 
 
+def resolve_labels(labels: list[str], tax: Taxonomy) -> tuple[list[str] | None, list[str]]:
+    """Split free labels into canonical ids and unrecognized labels.
+
+    No labels → None (full sheet). Unknown labels are reported back to the
+    client instead of failing the whole request.
+    """
+    cleaned = [lbl.strip() for lbl in labels if lbl.strip()]
+    if not cleaned:
+        return None, []
+    ids: list[str] = []
+    unknown: list[str] = []
+    for label in cleaned:
+        try:
+            attr_id = tax.resolve_attribute(label)
+        except UnknownAttributeError:
+            unknown.append(label)
+            continue
+        if attr_id not in ids:
+            ids.append(attr_id)
+    return ids, unknown
+
+
 @router.post("/spec", response_model=SpecSheetResponse)
 def spec(request: SpecRequest) -> SpecSheetResponse:
     """Build the standardized spec sheet for a vehicle version."""
     tax = get_taxonomy()
     settings = get_settings()
     vehicle = request.to_vehicle_key()
-    log.info("spec_request", vehicle=vehicle.slug(), attributes=request.attributes)
+    attribute_ids, unknown = resolve_labels(request.attributes, tax)
+    log.info("spec_request", vehicle=vehicle.slug(), attributes=attribute_ids, unknown=unknown)
 
-    try:
-        result = run_for_request(vehicle, request.attributes, settings, tax)
-    except UnknownAttributeError as exc:
-        raise HTTPException(status_code=422, detail=str(exc)) from exc
-    except PipelineUnavailableError as exc:
-        raise HTTPException(status_code=503, detail=str(exc)) from exc
-
-    return build_spec_sheet(vehicle, result.specs, tax, result.document_count)
+    run = run_for_request(vehicle, attribute_ids, settings, tax)
+    return build_spec_sheet(
+        vehicle,
+        run.result.specs,
+        tax,
+        run.result.document_count,
+        mode=run.mode,
+        unknown_attributes=unknown,
+    )

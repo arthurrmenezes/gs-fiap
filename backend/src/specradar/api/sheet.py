@@ -15,6 +15,8 @@ def build_spec_sheet(
     taxonomy: Taxonomy,
     source_count: int,
     *,
+    mode: str = "demo",
+    unknown_attributes: list[str] | None = None,
     generated_at: datetime | None = None,
 ) -> SpecSheetResponse:
     """Project reconciled specs into the always-same-format sheet, grouped order."""
@@ -30,5 +32,7 @@ def build_spec_sheet(
         market=vehicle.market,
         generated_at=generated_at or datetime.now(UTC),
         source_count=source_count,
+        mode=mode,
+        unknown_attributes=unknown_attributes or [],
         fields=fields,
     )
